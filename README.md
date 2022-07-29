@@ -52,6 +52,26 @@ Flags:
 
 
 
+## Output
+
+```
+{
+  "host": "127.0.0.1",
+  "allocatableResource": {
+    "milliCPU": 2000,
+    "memory": 7971794944,
+    "storage": 52709400576
+  },
+  "requestedResource": {
+    "milliCPU": 12,
+    "memory": 1163649024,
+    "storage": 20925743104
+  }
+}
+```
+
+
+
 ## License
 
 Project License can be found [here](LICENSE).
