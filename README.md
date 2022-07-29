@@ -59,3 +59,8 @@ Project License can be found [here](LICENSE).
 
 
 ## Reference
+
+- [gopsutil](https://github.com/shirou/gopsutil)
+- [heim](https://github.com/heim-rs/heim)
+- [pipego](https://github.com/pipego/plugin-fetch/blob/main/plugin/localhost.go)
+- [psutil](https://github.com/giampaolo/psutil)
