@@ -18,15 +18,15 @@ import (
 )
 
 const (
-	// DURATION Duration: 10s = 10*1000ms = 10*1000000000ns
-	DURATION = 10 * 1000000000
-	MILLI    = 1000
+	// Duration Duration: 10s = 10*1000ms = 10*1000000000ns
+	Duration = 10 * 1000000000
+	Milli    = 1000
 )
 
 const (
-	DEV  = "/dev/"
-	HOME = "/home"
-	ROOT = "/"
+	Dev  = "/dev/"
+	Home = "/home"
+	Root = "/"
 )
 
 var (
@@ -65,12 +65,12 @@ func milliCPU() (alloc, request int64) {
 		return -1, -1
 	}
 
-	if c*MILLI > math.MaxInt64 {
+	if c*Milli > math.MaxInt64 {
 		return -1, -1
 	}
 
 	// FIXME: Got error on MacOS 10.13.6
-	p, err := cpu.Percent(DURATION, false)
+	p, err := cpu.Percent(Duration, false)
 	if err != nil {
 		return -1, -1
 	}
@@ -80,7 +80,7 @@ func milliCPU() (alloc, request int64) {
 		return -1, -1
 	}
 
-	return int64(c * MILLI), int64(used * MILLI)
+	return int64(c * Milli), int64(used * Milli)
 }
 
 func memory() (alloc, request int64) {
@@ -101,7 +101,7 @@ func storage() (alloc, request int64) {
 		found := false
 		p, _ := disk.Partitions(false)
 		for _, item := range p {
-			if strings.HasPrefix(item.Device, DEV) && item.Mountpoint == path {
+			if strings.HasPrefix(item.Device, Dev) && item.Mountpoint == path {
 				found = true
 				break
 			}
@@ -109,7 +109,7 @@ func storage() (alloc, request int64) {
 		return found
 	}
 
-	r, err := disk.Usage(ROOT)
+	r, err := disk.Usage(Root)
 	if err != nil {
 		return -1, -1
 	}
@@ -117,8 +117,8 @@ func storage() (alloc, request int64) {
 	total := r.Total
 	used := r.Used
 
-	if helper(HOME) {
-		h, err := disk.Usage(HOME)
+	if helper(Home) {
+		h, err := disk.Usage(Home)
 		if err != nil {
 			return -1, -1
 		}
