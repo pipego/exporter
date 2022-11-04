@@ -7,10 +7,12 @@ import (
 	"math"
 	"net"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
+	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/mem"
 	"gopkg.in/alecthomas/kingpin.v2"
 
@@ -38,17 +40,18 @@ func Run(ctx context.Context) error {
 
 	c := config.New()
 
-	c.Host = host()
+	c.Host = _host()
 	c.AllocatableResource.MilliCPU, c.RequestedResource.MilliCPU = milliCPU()
 	c.AllocatableResource.Memory, c.RequestedResource.Memory = memory()
 	c.AllocatableResource.Storage, c.RequestedResource.Storage = storage()
+	c.Stats.CPU, c.Stats.OS, c.Stats.Memory, c.Stats.Storage = stats(c.AllocatableResource, c.RequestedResource)
 
 	export(c)
 
 	return nil
 }
 
-func host() string {
+func _host() string {
 	conn, _ := net.Dial("udp", "8.8.8.8:8")
 	defer func(conn net.Conn) {
 		_ = conn.Close()
@@ -131,6 +134,22 @@ func storage() (alloc, request int64) {
 	}
 
 	return int64(total), int64(used)
+}
+
+func stats(alloc, req config.Resource) (_cpu config.Readable, _os string, memory, storage config.Readable) {
+	_cpu.Total = strconv.FormatInt(alloc.MilliCPU/Milli, 10) + " CPU"
+	_cpu.Used = strconv.FormatInt(req.MilliCPU/alloc.MilliCPU, 10) + "%"
+
+	info, _ := host.Info()
+	_os = fmt.Sprintf("%s %s", strings.Title(strings.ToLower(info.Platform)), info.PlatformVersion)
+
+	memory.Total = strconv.FormatInt(alloc.Memory>>30, 10) + " GB"
+	memory.Used = strconv.FormatInt(req.Memory>>30, 10) + " GB"
+
+	storage.Total = strconv.FormatInt(alloc.Storage>>30, 10) + " GB"
+	storage.Used = strconv.FormatInt(req.Storage>>30, 10) + " GB"
+
+	return _cpu, _os, memory, storage
 }
 
 func export(cfg *config.Config) {
