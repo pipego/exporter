@@ -56,16 +56,31 @@ Flags:
 
 ```
 {
-  "host": "127.0.0.1",
+  "host": "172.23.179.208",
   "allocatableResource": {
-    "milliCPU": 2000,
-    "memory": 7971794944,
-    "storage": 52709400576
+    "milliCPU": 16000,
+    "memory": 12871671808,
+    "storage": 269490393088
   },
   "requestedResource": {
     "milliCPU": 12,
-    "memory": 1163649024,
-    "storage": 20925743104
+    "memory": 618688512,
+    "storage": 19994185728
+  },
+  "stats": {
+    "cpu": {
+      "total": "16 CPU",
+      "used": "0%"
+    },
+    "os": "Ubuntu 20.04",
+    "memory": {
+      "total": "11 GB",
+      "used": "0 GB"
+    },
+    "storage": {
+      "total": "250 GB",
+      "used": "18 GB"
+    }
   }
 }
 ```
