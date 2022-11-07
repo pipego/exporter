@@ -14,6 +14,8 @@ import (
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/mem"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"gopkg.in/alecthomas/kingpin.v2"
 
 	"github.com/pipego/exporter/config"
@@ -23,7 +25,7 @@ const (
 	Base    = 10
 	Bitwise = 30
 	// Duration Duration: 10s = 10*1000ms = 10*1000000000ns
-	Duration = 10 * 1000000000
+	Duration = 1 * 1000000000
 	Milli    = 1000
 )
 
@@ -140,10 +142,11 @@ func storage() (alloc, request int64) {
 
 func stats(alloc, req config.Resource) (_cpu config.Readable, _os string, memory, storage config.Readable) {
 	_cpu.Total = strconv.FormatInt(alloc.MilliCPU/Milli, Base) + " CPU"
-	_cpu.Used = strconv.FormatInt(req.MilliCPU/alloc.MilliCPU, Base) + "%"
+	_cpu.Used = strconv.FormatInt(req.MilliCPU*100/alloc.MilliCPU, Base) + "%"
 
 	info, _ := host.Info()
-	_os = fmt.Sprintf("%s %s", strings.Title(strings.ToLower(info.Platform)), info.PlatformVersion)
+	caser := cases.Title(language.BrazilianPortuguese)
+	_os = fmt.Sprintf("%s %s", caser.String(info.Platform), info.PlatformVersion)
 
 	memory.Total = strconv.FormatInt(alloc.Memory>>Bitwise, Base) + " GB"
 	memory.Used = strconv.FormatInt(req.Memory>>Bitwise, Base) + " GB"
