@@ -21,6 +21,7 @@ import (
 
 const (
 	Base = 10
+	Bitwise = 30
 	// Duration Duration: 10s = 10*1000ms = 10*1000000000ns
 	Duration = 10 * 1000000000
 	Milli    = 1000
@@ -144,11 +145,11 @@ func stats(alloc, req config.Resource) (_cpu config.Readable, _os string, memory
 	info, _ := host.Info()
 	_os = fmt.Sprintf("%s %s", strings.Title(strings.ToLower(info.Platform)), info.PlatformVersion)
 
-	memory.Total = strconv.FormatInt(alloc.Memory>>30, Base) + " GB"
-	memory.Used = strconv.FormatInt(req.Memory>>30, Base) + " GB"
+	memory.Total = strconv.FormatInt(alloc.Memory>>Bitwise, Base) + " GB"
+	memory.Used = strconv.FormatInt(req.Memory>>Bitwise, Base) + " GB"
 
-	storage.Total = strconv.FormatInt(alloc.Storage>>30, Base) + " GB"
-	storage.Used = strconv.FormatInt(req.Storage>>30, Base) + " GB"
+	storage.Total = strconv.FormatInt(alloc.Storage>>Bitwise, Base) + " GB"
+	storage.Used = strconv.FormatInt(req.Storage>>Bitwise, Base) + " GB"
 
 	return _cpu, _os, memory, storage
 }
