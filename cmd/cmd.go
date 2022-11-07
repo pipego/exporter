@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	Base = 10
+	Base    = 10
 	Bitwise = 30
 	// Duration Duration: 10s = 10*1000ms = 10*1000000000ns
 	Duration = 10 * 1000000000
