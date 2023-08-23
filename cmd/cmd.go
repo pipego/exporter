@@ -9,6 +9,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/disk"
@@ -22,10 +23,9 @@ import (
 )
 
 const (
-	Base    = 10
-	Bitwise = 30
-	// Duration Duration: 10s = 10*1000ms = 10*1000000000ns
-	Duration = 1 * 1000000000
+	Base     = 10
+	Bitwise  = 30
+	Duration = 2 * time.Second
 	Milli    = 1000
 )
 
